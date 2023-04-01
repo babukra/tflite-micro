@@ -24,47 +24,53 @@ limitations under the License.
 //#include "tensorflow/lite/micro/micro_log.h"
 #include "tensorflow/lite/micro/micro_mutable_op_resolver.h"
 #include "tensorflow/lite/micro/micro_profiler.h"
-#include "tensorflow/lite/micro/models/keyword_scrambled_model_data.h"
+#include "tensorflow/lite/micro/models/lstm_model_data.h"
 #include "tensorflow/lite/micro/system_setup.h"
 
 /*
- * Keyword Spotting Benchmark for performance optimizations. The model used in
+ * LSTM Benchmark for performance optimizations. The model used in
  * this benchmark only serves as a reference. The values assigned to the model
- * weights and parameters are not representative of the original model.
+ dfdsf weights and parameters are not representative of the original model.
  */
 
 namespace tflite {
 
-using KeywordBenchmarkRunner = MicroBenchmarkRunner<int16_t>;
-using KeywordOpResolver = MicroMutableOpResolver<6>;
+using LSTMBenchmarkRunner = MicroBenchmarkRunner<int16_t>;
+using LSTMOpResolver = MicroMutableOpResolver<8>;
 
 // Create an area of memory to use for input, output, and intermediate arrays.
 // Align arena to 16 bytes to avoid alignment warnings on certain platforms.
 constexpr int kTensorArenaSize = 21 * 1024;
 alignas(16) uint8_t tensor_arena[kTensorArenaSize];
 
-uint8_t benchmark_runner_buffer[sizeof(KeywordBenchmarkRunner)];
-uint8_t op_resolver_buffer[sizeof(KeywordOpResolver)];
+uint8_t benchmark_runner_buffer[sizeof(LSTMBenchmarkRunner)];
+uint8_t op_resolver_buffer[sizeof(LSTMOpResolver)];
 
 // Initialize benchmark runner instance explicitly to avoid global init order
 // issues on Sparkfun. Use new since static variables within a method
 // are automatically surrounded by locking, which breaks bluepill and stm32f4.
-KeywordBenchmarkRunner* CreateBenchmarkRunner(MicroProfiler* profiler) {
-  // We allocate the KeywordOpResolver from a global buffer because the object's
-  // lifetime must exceed that of the KeywordBenchmarkRunner object.
-  KeywordOpResolver* op_resolver = new (op_resolver_buffer) KeywordOpResolver();
+LSTMBenchmarkRunner* CreateBenchmarkRunner(MicroProfiler* profiler) {
+  // We allocate the LSTMOpResolver from a global buffer because the object's
+  // lifetime must exceed that of the LSTMBenchmarkRunner object.
+  LSTMOpResolver* op_resolver = new (op_resolver_buffer) LSTMOpResolver();
+  op_resolver->AddUnpack();
   op_resolver->AddFullyConnected(tflite::Register_FULLY_CONNECTED_INT8());
-  op_resolver->AddQuantize();
-  op_resolver->AddSoftmax(tflite::Register_SOFTMAX_INT8_INT16());
-  op_resolver->AddSvdf(tflite::Register_SVDF_INT8());
+  op_resolver->AddSplit();
+  op_resolver->AddLogistic();
+  op_resolver->AddMul();
+  op_resolver->AddTanh();
+  op_resolver->AddAdd(tflite::Register_ADD());
+  op_resolver->AddReshape();
+  //op_resolver->AddQuantize();
+  //op_resolver->AddSoftmax(tflite::Register_SOFTMAX_INT8_INT16());
+  //op_resolver->AddSvdf(tflite::Register_SVDF_INT8());
 
   return new (benchmark_runner_buffer)
-      KeywordBenchmarkRunner(g_keyword_scrambled_model_data, op_resolver,
-                             tensor_arena, kTensorArenaSize, profiler);
+      LSTMBenchmarkRunner(g_lstm_model_data, op_resolver, tensor_arena, kTensorArenaSize, profiler);
 }
 
-void KeywordRunNIerations(int iterations, const char* tag,
-                          KeywordBenchmarkRunner& benchmark_runner,
+void LSTMRunNIerations(int iterations, const char* tag,
+                          LSTMBenchmarkRunner& benchmark_runner,
                           MicroProfiler& profiler) {
   int32_t ticks = 0;
   for (int i = 0; i < iterations; ++i) {
@@ -82,13 +88,13 @@ int main(int argc, char** argv) {
   tflite::InitializeTarget();
   tflite::MicroProfiler profiler;
 
-  uint32_t event_handle = profiler.BeginEvent("InitializeKeywordRunner");
-  tflite::KeywordBenchmarkRunner* benchmark_runner = CreateBenchmarkRunner(&profiler);
+  uint32_t event_handle = profiler.BeginEvent("InitializeLSTMRunner");
+  tflite::LSTMBenchmarkRunner* benchmark_runner = CreateBenchmarkRunner(&profiler);
   profiler.EndEvent(event_handle);
 
   MicroPrintf("");  // null MicroPrintf serves as a newline.
   
-  tflite::KeywordRunNIerations(1, "KeywordRunNIerations(1)", *benchmark_runner, profiler);
+  tflite::LSTMRunNIerations(1, "LSTMRunNIerations(1)", *benchmark_runner, profiler);
   MicroPrintf("");
   profiler.Log();
   MicroPrintf("");  // null MicroPrintf serves as a newline.

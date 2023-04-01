@@ -44,3 +44,16 @@ generate_cc_arrays(
     src = "keyword_scrambled_8bit.tflite",
     out = "keyword_scrambled_8bit_model_data.cc",
 )
+
+generate_cc_arrays(
+    name = "generated_lstm_model_hdr",
+    src = "lstm.tflite",
+    out = "lstm_model_data.h",
+)
+
+generate_cc_arrays(
+    name = "generated_lstm_model_cc",
+    src = "lstm.tflite",
+    out = "lstm_model_data.cc",
+)
+

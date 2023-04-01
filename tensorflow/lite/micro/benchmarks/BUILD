@@ -100,3 +100,35 @@ cc_binary(
         "//tensorflow/lite/schema:schema_fbs",
     ],
 )
+
+
+cc_library(
+    name = "lstm_model_data",
+    srcs = [
+        "//tensorflow/lite/micro/models:generated_lstm_model_cc",
+    ],
+    hdrs = [
+        "//tensorflow/lite/micro/models:generated_lstm_model_hdr",
+    ],
+    visibility = [
+        ":micro_top_level",
+    ],
+)
+
+
+cc_binary(
+    name = "lstm_benchmark",
+    srcs = ["lstm_benchmark.cc"],
+    deps = [
+        ":lstm_model_data",
+        ":micro_benchmark",
+        "//tensorflow/lite/c:common",
+        "//tensorflow/lite/micro:micro_error_reporter",
+        "//tensorflow/lite/micro:micro_framework",
+        "//tensorflow/lite/micro:op_resolvers",
+        "//tensorflow/lite/micro:system_setup",
+    ],
+)
+
+
+

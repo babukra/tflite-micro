@@ -7,6 +7,15 @@ tensorflow/lite/micro/models/keyword_scrambled.tflite
 KEYWORD_BENCHMARK_HDRS := \
 tensorflow/lite/micro/benchmarks/micro_benchmark.h
 
+LSTM_BENCHMARK_SRCS := \
+$(TENSORFLOW_ROOT)tensorflow/lite/micro/benchmarks/lstm_benchmark.cc
+ 
+LSTM_BENCHMARK_GENERATOR_INPUTS := \
+$(TENSORFLOW_ROOT)tensorflow/lite/micro/models/lstm.tflite
+ 
+LSTM_BENCHMARK_HDRS := \
+$(TENSORFLOW_ROOT)tensorflow/lite/micro/benchmarks/micro_benchmark.h
+  
 KEYWORD_BENCHMARK_8BIT_SRCS := \
 tensorflow/lite/micro/benchmarks/keyword_benchmark_8bit.cc
 
@@ -43,6 +52,11 @@ $(KEYWORD_BENCHMARK_SRCS),$(KEYWORD_BENCHMARK_HDRS),$(KEYWORD_BENCHMARK_GENERATO
 # Builds a standalone binary.
 $(eval $(call microlite_test,keyword_benchmark_8bit,\
 $(KEYWORD_BENCHMARK_8BIT_SRCS),$(KEYWORD_BENCHMARK_8BIT_HDRS),$(KEYWORD_BENCHMARK_8BIT_GENERATOR_INPUTS)))
+
+# Builds a standalone binary.
+$(eval $(call microlite_test,lstm_benchmark,\
+$(LSTM_BENCHMARK_SRCS),$(LSTM_BENCHMARK_HDRS),$(LSTM_BENCHMARK_GENERATOR_INPUTS)))
+
 
 $(eval $(call microlite_test,person_detection_benchmark,\
 $(PERSON_DETECTION_BENCHMARK_SRCS),$(PERSON_DETECTION_BENCHMARK_HDRS),$(PERSON_DETECTION_BENCHMARK_GENERATOR_INPUTS)))

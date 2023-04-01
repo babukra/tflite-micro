@@ -582,6 +582,7 @@ cc_test(
         ":op_resolvers",
         ":recording_allocators",
         "//tensorflow/lite/micro/benchmarks:keyword_scrambled_model_data",
+        "//tensorflow/lite/micro/benchmarks:lstm_model_data",
         "//tensorflow/lite/micro/testing:micro_test",
         "//tensorflow/lite/micro/testing:test_conv_model",
     ],
