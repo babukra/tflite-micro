@@ -16,6 +16,15 @@ $(TENSORFLOW_ROOT)tensorflow/lite/micro/models/lstm.tflite
 LSTM_BENCHMARK_HDRS := \
 $(TENSORFLOW_ROOT)tensorflow/lite/micro/benchmarks/micro_benchmark.h
   
+WAV2LETTER_BENCHMARK_SRCS := \
+tensorflow/lite/micro/benchmarks/wav2letter_benchmark.cc
+
+WAV2LETTER_BENCHMARK_GENERATOR_INPUTS := \
+tensorflow/lite/micro/models/tiny_wav2letter_int8.tflite
+
+WAV2LETTER_BENCHMARK_HDRS := \
+tensorflow/lite/micro/benchmarks/micro_benchmark.h
+
 KEYWORD_BENCHMARK_8BIT_SRCS := \
 tensorflow/lite/micro/benchmarks/keyword_benchmark_8bit.cc
 
@@ -57,6 +66,9 @@ $(KEYWORD_BENCHMARK_8BIT_SRCS),$(KEYWORD_BENCHMARK_8BIT_HDRS),$(KEYWORD_BENCHMAR
 $(eval $(call microlite_test,lstm_benchmark,\
 $(LSTM_BENCHMARK_SRCS),$(LSTM_BENCHMARK_HDRS),$(LSTM_BENCHMARK_GENERATOR_INPUTS)))
 
+# Builds a standalone binary.
+$(eval $(call microlite_test,wav2letter_benchmark,\
+$(WAV2LETTER_BENCHMARK_SRCS),$(WAV2LETTER_BENCHMARK_HDRS),$(WAV2LETTER_BENCHMARK_GENERATOR_INPUTS)))
 
 $(eval $(call microlite_test,person_detection_benchmark,\
 $(PERSON_DETECTION_BENCHMARK_SRCS),$(PERSON_DETECTION_BENCHMARK_HDRS),$(PERSON_DETECTION_BENCHMARK_GENERATOR_INPUTS)))

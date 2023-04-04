@@ -34,10 +34,23 @@ generate_cc_arrays(
 )
 
 generate_cc_arrays(
+    name = "generated_tiny_wav2letter_model_hdr",
+    src = "tiny_wav2letter_int8.tflite",
+    out = "tiny_wav2letter_model_data.h",
+)
+
+generate_cc_arrays(
+    name = "generated_tiny_wav2letter_model_cc",
+    src = "tiny_wav2letter_int8.tflite",
+    out = "tiny_wav2letter_model_data.cc",
+)
+
+generate_cc_arrays(
     name = "generated_keyword_scrambled_8bit_model_hdr",
     src = "keyword_scrambled_8bit.tflite",
     out = "keyword_scrambled_8bit_model_data.h",
 )
+
 
 generate_cc_arrays(
     name = "generated_keyword_scrambled_8bit_model_cc",

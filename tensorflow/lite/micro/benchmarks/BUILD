@@ -130,5 +130,31 @@ cc_binary(
     ],
 )
 
+cc_library(
+    name = "tiny_wav2letter_model_data",
+    srcs = [
+        "//tensorflow/lite/micro/models:generated_tiny_wav2letter_model_cc",
+    ],
+    hdrs = [
+        "//tensorflow/lite/micro/models:generated_tiny_wav2letter_model_hdr",
+    ],
+    visibility = [
+        ":micro_top_level",
+    ],
+)
+
+cc_binary(
+    name = "wav2letter_benchmark",
+    srcs = ["wav2letter_benchmark.cc"],
+    deps = [
+        ":tiny_wav2letter_model_data",
+        ":micro_benchmark",
+        "//tensorflow/lite/c:common",
+        "//tensorflow/lite/micro:micro_error_reporter",
+        "//tensorflow/lite/micro:micro_framework",
+        "//tensorflow/lite/micro:op_resolvers",
+        "//tensorflow/lite/micro:system_setup",
+    ],
+)
 
 

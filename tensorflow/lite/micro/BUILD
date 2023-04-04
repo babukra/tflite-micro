@@ -583,6 +583,7 @@ cc_test(
         ":recording_allocators",
         "//tensorflow/lite/micro/benchmarks:keyword_scrambled_model_data",
         "//tensorflow/lite/micro/benchmarks:lstm_model_data",
+        "//tensorflow/lite/micro/benchmarks:tiny_wav2letter_model_data",
         "//tensorflow/lite/micro/testing:micro_test",
         "//tensorflow/lite/micro/testing:test_conv_model",
     ],
