@@ -1,7 +1,8 @@
 #export VERSION=2021.8
 export VERSION=2021.7
-export BENCHMARK=run_person_detection_benchmark
+#export BENCHMARK=run_person_detection_benchmark
 #export BENCHMARK=run_wav2letter_benchmark
+export BENCHMARK=run_microspeech_benchmark
 #export BENCHMARK=run_keyword_benchmark
 #export BENCHMARK=run_lstm_benchmark
 #export XTENSA_CORE=nxp_rt600_RI2021_8_xclib
@@ -18,4 +19,5 @@ make -f tensorflow/lite/micro/tools/make/Makefile TARGET=xtensa \
 	TARGET_ARCH=$CORE \
 	XTENSA_TOOLS_VERSION=RI-$VERSION-linux \
 	XTENSA_CORE=$XTENSA_CORE \
+	XTENSA_EXTRA_CFLAGS="-stdlib=libc++" \
 	$BENCHMARK -j18

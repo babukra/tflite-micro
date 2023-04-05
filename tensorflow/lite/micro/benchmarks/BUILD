@@ -158,3 +158,29 @@ cc_binary(
 )
 
 
+cc_library(
+    name = "micro_speech_model_data",
+    srcs = [
+        "//tensorflow/lite/micro/models:generated_micro_speech_model_cc",
+    ],
+    hdrs = [
+        "//tensorflow/lite/micro/models:generated_micro_speech_model_hdr",
+    ],
+    visibility = [
+        ":micro_top_level",
+    ],
+)
+
+cc_binary(
+    name = "microspeech_benchmark",
+    srcs = ["microspeech_benchmark.cc"],
+    deps = [
+        ":micro_speech_model_data",
+        ":micro_benchmark",
+        "//tensorflow/lite/c:common",
+        "//tensorflow/lite/micro:micro_error_reporter",
+        "//tensorflow/lite/micro:micro_framework",
+        "//tensorflow/lite/micro:op_resolvers",
+        "//tensorflow/lite/micro:system_setup",
+    ],
+)

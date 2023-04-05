@@ -34,6 +34,17 @@ generate_cc_arrays(
 )
 
 generate_cc_arrays(
+    name = "generated_micro_speech_model_hdr",
+    src = "micro_speech.tflite",
+    out = "micro_speech_model_data.h",
+)
+
+generate_cc_arrays(
+    name = "generated_micro_speech_model_cc",
+    src = "micro_speech.tflite",
+    out = "micro_speech_model_data.cc",
+
+generate_cc_arrays(
     name = "generated_tiny_wav2letter_model_hdr",
     src = "tiny_wav2letter_int8.tflite",
     out = "tiny_wav2letter_model_data.h",

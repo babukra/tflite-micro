@@ -7,6 +7,15 @@ tensorflow/lite/micro/models/keyword_scrambled.tflite
 KEYWORD_BENCHMARK_HDRS := \
 tensorflow/lite/micro/benchmarks/micro_benchmark.h
 
+MICROSPEECH_BENCHMARK_SRCS := \
+tensorflow/lite/micro/benchmarks/microspeech_benchmark.cc
+
+MICROSPEECH_BENCHMARK_GENERATOR_INPUTS := \
+tensorflow/lite/micro/models/micro_speech.tflite
+
+MICROSPEECH_BENCHMARK_HDRS := \
+tensorflow/lite/micro/benchmarks/micro_benchmark.h
+
 LSTM_BENCHMARK_SRCS := \
 $(TENSORFLOW_ROOT)tensorflow/lite/micro/benchmarks/lstm_benchmark.cc
  
@@ -72,3 +81,12 @@ $(WAV2LETTER_BENCHMARK_SRCS),$(WAV2LETTER_BENCHMARK_HDRS),$(WAV2LETTER_BENCHMARK
 
 $(eval $(call microlite_test,person_detection_benchmark,\
 $(PERSON_DETECTION_BENCHMARK_SRCS),$(PERSON_DETECTION_BENCHMARK_HDRS),$(PERSON_DETECTION_BENCHMARK_GENERATOR_INPUTS)))
+
+
+# Builds a standalone binary.
+$(eval $(call microlite_test,microspeech_benchmark,\
+$(MICROSPEECH_BENCHMARK_SRCS),$(MICROSPEECH_BENCHMARK_HDRS),$(MICROSPEECH_BENCHMARK_GENERATOR_INPUTS)))
+
+# Builds a standalone binary.
+$(eval $(call microlite_test,microspeech_benchmark_8bit,\
+$(MICROSPEECH_BENCHMARK_8BIT_SRCS),$(MICROSPEECH_BENCHMARK_8BIT_HDRS),$(MICROSPEECH_BENCHMARK_8BIT_GENERATOR_INPUTS)))
